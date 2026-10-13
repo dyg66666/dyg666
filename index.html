@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>软件工程课程个人项目 | 邓雁戈</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Microsoft Yahei", sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #2b5797;
+            color: white;
+            text-align: center;
+            padding: 30px 10px;
+        }
+        nav {
+            background-color: #1f4478;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav button {
+            background: none;
+            border: none;
+            color: #fff;
+            padding: 14px 24px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        nav button:hover { background: #16355c; }
+        nav button.active { background: #2b5797; font-weight: bold; }
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .card {
+            background: white;
+            padding: 24px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+        h2 { margin-bottom: 12px; color: #2b5797; }
+        ul { padding-left: 24px; }
+        button.btn {
+            padding: 8px 16px;
+            background: #2b5797;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button.btn:hover { background: #1f4478; }
+        footer { text-align: center; padding: 20px; color: #666; font-size: 14px; }
+
+        /* 时钟 */
+        #clock {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2b5797;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        /* 待办清单 */
+        .todo-input {
+            padding: 8px;
+            width: 70%;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        #todoList {
+            margin-top:14px;
+            list-style:none;
+        }
+        #todoList li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 4px;
+            border-bottom: 1px solid #eee;
+        }
+        .del { color: #c0392b; cursor: pointer; font-size: 14px; }
+
+        /* 计算器 */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .calc-grid button {
+            padding: 14px;
+            font-size: 18px;
+            border: none;
+            border-radius: 6px;
+            background: #eef2f7;
+            cursor: pointer;
+        }
+        .calc-grid button:hover { background: #dde5ef; }
+        .calc-grid button.op { background: #2b5797; color: white; }
+        .calc-grid button.op:hover { background: #1f4478; }
+        #calcScreen {
+            max-width: 300px;
+            margin: 0 auto 12px;
+            padding: 12px;
+            background: #eef2f7;
+            border-radius: 6px;
+            text-align: right;
+            font-size: 24px;
+            min-height: 48px;
+        }
+
+        /* 表单 */
+        .form-row { margin-bottom: 12px; }
+        .form-row label { display: block; margin-bottom: 4px; font-weight: bold; }
+        .form-row input {
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        #formMsg { color: #c0392b; margin-top: 8px; }
+        #resultCard { display: none; background: #eaf2fb; padding: 16px; border-radius: 8px; margin-top: 12px; }
+        #recordCard { background:#eafaf1; margin-top:16px; display:none; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>软件工程课程个人项目</h1>
+        <p>姓名：邓雁戈 &nbsp;|&nbsp; 指导老师：吴世枫</p>
+    </header>
+
+    <nav>
+        <button class="active" data-page="home">项目主页</button>
+        <button data-page="todo">待办清单</button>
+        <button data-page="calc">简易计算器</button>
+        <button data-page="form">个人信息</button>
+    </nav>
+
+    <div class="container">
+        <!-- 主页 -->
+        <section id="home" class="page active">
+            <div class="card">
+                <h2>项目简介</h2>
+                <p>本页面为软件工程课程个人作业演示网站。学习并实践网页前端开发，完成页面布局、页签切换、实时交互等功能。使用localStorage实现本地数据持久化，提交表单信息刷新页面不会丢失。</p>
+            </div>
+            <div class="card">
+                <h2>功能模块</h2>
+                <ul>
+                    <li>多页签页面切换</li>
+                    <li>实时时钟（每秒自动更新）</li>
+                    <li>待办事项：新增、删除（本地存储，刷新不丢）</li>
+                    <li>简易计算器：加减乘除运算，除零保护</li>
+                    <li>个人信息表单：表单校验+本地持久化存储</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h2>交互测试按钮</h2>
+                <p>点击下方按钮测试交互：</p>
+                <button class="btn" id="showBtn">点我测试</button>
+                <p id="msg" style="margin-top:10px;"></p>
+            </div>
+            <div class="card">
+                <h2>实时时钟</h2>
+                <div id="clock"></div>
+            </div>
+        </section>
+
+        <!-- 待办清单 -->
+        <section id="todo" class="page">
+            <div class="card">
+                <h2>待办事项清单</h2>
+                <input class="todo-input" id="todoInput" placeholder="输入任务">
+                <button class="btn" id="addTodoBtn">添加任务</button>
+                <ul id="todoList"></ul>
+            </div>
+        </section>
+
+        <!-- 计算器 -->
+        <section id="calc" class="page">
+            <div class="card">
+                <h2>简易计算器</h2>
+                <div id="calcScreen">0</div>
+                <div class="calc-grid">
+                    <button>7</button><button>8</button><button>9</button><button class="op">+</button>
+                    <button>4</button><button>5</button><button>6</button><button class="op">-</button>
+                    <button>1</button><button>2</button><button>3</button><button class="op">×</button>
+                    <button>0</button><button class="op">C</button><button class="op">=</button><button class="op">÷</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 个人信息表单 -->
+        <section id="form" class="page">
+            <div class="card">
+                <h2>个人信息提交（表单验证+本地存储）</h2>
+                <div class="form-row">
+                    <label>姓名</label>
+                    <input id="nameInput" placeholder="请输入姓名">
+                </div>
+                <div class="form-row">
+                    <label>学号</label>
+                    <input id="stuInput" placeholder="请输入学号">
+                </div>
+                <div class="form-row">
+                    <label>邮箱</label>
+                    <input id="emailInput" placeholder="请输入邮箱">
+                </div>
+                <button class="btn" id="submitBtn">提交</button>
+                <button class="btn" id="clearBtn" style="background:#c0392b;">清空记录</button>
+                <p id="formMsg"></p>
+                <div id="resultCard">
+                    <strong>本次提交成功：</strong>
+                    <p id="resultText"></p>
+                </div>
+                <div id="recordCard" class="card">
+                    <h3>历史保存记录</h3>
+                    <p id="recordText"></p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2026 软件工程个人作业 · 邓雁戈</p>
+    </footer>
+
+    <script>
+        //1.页签切换
+        const navBtns = document.querySelectorAll('nav button');
+        const pages = document.querySelectorAll('.page');
+        navBtns.forEach(btn=>{
+            btn.onclick = ()=>{
+                navBtns.forEach(b=>b.classList.remove('active'));
+                btn.classList.add('active');
+                pages.forEach(p=>p.classList.remove('active'));
+                document.getElementById(btn.dataset.page).classList.add('active');
+            }
+        })
+
+        //2.主页测试按钮
+        document.getElementById('showBtn').onclick = function(){
+            document.getElementById('msg').innerText = "✅ 交互运行成功！";
+        }
+
+        //3.实时时钟
+        function updateClock(){
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('zh-CN',{hour12:false});
+        }
+        updateClock();
+        setInterval(updateClock,1000);
+
+
+        //4.待办清单（localStorage持久化）
+        const todoInput = document.getElementById('todoInput');
+        const todoList = document.getElementById('todoList');
+        const addTodoBtn = document.getElementById('addTodoBtn');
+        //读取保存的待办
+        function loadTodo(){
+            const data = localStorage.getItem("todos");
+            if(data){
+                const arr = JSON.parse(data);
+                arr.forEach(item=>addTodoItem(item))
+            }
+        }
+        function saveTodo(){
+            let arr = [];
+            todoList.querySelectorAll("li").forEach(li=>{
+                arr.push(li.querySelector("span").innerText)
+            })
+            localStorage.setItem("todos",JSON.stringify(arr));
+        }
+        function addTodoItem(text){
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${text}</span><span class="del">删除</span>`;
+            li.querySelector('.del').onclick = function(){
+                li.remove();
+                saveTodo();
+            }
+            todoList.appendChild(li);
+        }
+        addTodoBtn.onclick = function(){
+            const val = todoInput.value.trim();
+            if(!val){alert("请输入任务！");return;}
+            addTodoItem(val);
+            saveTodo();
+            todoInput.value = "";
+        }
+        loadTodo();
+
+        //5.计算器
+        const calcScreen = document.getElementById('calcScreen');
+        let num1 = "";
+        let num2 = "";
+        let op = "";
+        let waitSecond = false;
+        document.querySelector(".calc-grid").onclick = function(e){
+            const v = e.target.innerText;
+            if(v === 'C'){
+                num1="";num2="";op="";waitSecond=false;
+                calcScreen.innerText = "0";
+                return;
+            }
+            if(["+","-","×","÷"].includes(v)){
+                if(num1 === "") return;
+                op = v;
+                waitSecond = true;
+                calcScreen.innerText = num1 + op;
+                return;
+            }
+            if(v === "="){
+                if(!num1 || !num2 || !op) return;
+                let a = Number(num1),b=Number(num2),res;
+                switch(op){
+                    case "+": res = a+b;break;
+                    case "-": res = a-b;break;
+                    case "×": res = a*b;break;
+                    case "÷":
+                        if(b===0){calcScreen.innerText="除零错误";num1=num2=op="";waitSecond=false;return;}
+                        res = a / b;
+                        break;
+                }
+                calcScreen.innerText = res;
+                num1 = String(res);
+                num2 = "";
+                op = "";
+                waitSecond = false;
+                return;
+            }
+            if(waitSecond){
+                num2 += v;
+                calcScreen.innerText = num1+op+num2;
+            }else{
+                num1 +=v;
+                calcScreen.innerText = num1;
+            }
+        }
+
+        //6.表单本地存储
+        const nameInput = document.getElementById('nameInput');
+        const stuInput = document.getElementById('stuInput');
+        const emailInput = document.getElementById('emailInput');
+        const formMsg = document.getElementById('formMsg');
+        const resultCard = document.getElementById('resultCard');
+        const resultText = document.getElementById('resultText');
+        const recordCard = document.getElementById('recordCard');
+        const recordText = document.getElementById('recordText');
+
+        //加载保存信息
+        function loadForm(){
+            const saved = localStorage.getItem("userInfo");
+            if(saved){
+                const d = JSON.parse(saved);
+                nameInput.value = d.name;
+                stuInput.value = d.stu;
+                emailInput.value = d.email;
+                recordCard.style.display = "block";
+                recordText.innerText = `姓名：${d.name}，学号：${d.stu}，邮箱：${d.email}`;
+            }
+        }
+        loadForm();
+
+        document.getElementById('submitBtn').onclick = function(){
+            const name = nameInput.value.trim();
+            const stu = stuInput.value.trim();
+            const email = emailInput.value.trim();
+            formMsg.innerText = "";
+            if(!name){formMsg.innerText="姓名不能为空";return;}
+            if(!stu){formMsg.innerText="学号不能为空";return;}
+            if(!email || !email.includes("@")){formMsg.innerText="邮箱格式错误";return;}
+
+            const data = {name,stu,email};
+            localStorage.setItem("userInfo",JSON.stringify(data));
+            resultCard.style.display="block";
+            resultText.innerText = `姓名：${name}；学号：${stu}；邮箱：${email}`;
+            recordCard.style.display="block";
+            recordText.innerText = `姓名：${name}，学号：${stu}，邮箱：${email}`;
+        }
+        document.getElementById('clearBtn').onclick = function(){
+            localStorage.removeItem("userInfo");
+            nameInput.value = "";
+            stuInput.value = "";
+            emailInput.value = "";
+            resultCard.style.display = "none";
+            recordCard.style.display = "none";
+            formMsg.innerText = "记录已清空";
+        }
+    </script>
+</body>
+</html>
